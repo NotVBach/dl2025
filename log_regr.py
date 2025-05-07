@@ -57,7 +57,7 @@ def gradient_descent(X1, X2, y, lr, iter):
 
         print(f"Iteration {i}: Loss={loss_val}, w0={w0}, w1={w1}, w2={w2}")
 
-    return loss, iterations
+    return loss, iterations, w0, w1, w2
 
 def focal_loss(X1, X2, y, w1, w2, w0):
     m = len(y)
@@ -115,7 +115,35 @@ def focal_gradient_descent(X1, X2, y, lr, iter):
 
         print(f"Iteration {i}: Loss={loss_val}, w0={w0}, w1={w1}, w2={w2}")
 
-    return loss, iterations
+    return loss, iterations, w0, w1, w2
+
+def loss_plot(iter, loss):
+    plt.figure(figsize=(10, 8))
+    plt.plot(iter, loss, label='Loss', color='blue')
+    plt.xlabel('Iteration')
+    plt.ylabel('Loss (Focal loss)')
+    # plt.title('Loss Function Over Iterations')
+    plt.show()  # Display the plot
+
+def boundary_plot(X1, X2, w0, w1, w2):
+    plt.figure(figsize=(10, 8))
+    for i in range(len(y)):
+        if y[i] == 1:
+            loan = plt.scatter(X1[i], X2[i], color='blue')
+        else:
+            no_loan = plt.scatter(X1[i], X2[i], color='red', label='No Loan')
+
+    experience_range = [-0.1, max(X1) + 0.5]
+    salary_boundary = [(-w0 - w1 * x) / w2 for x in experience_range]
+
+    plt.plot(experience_range, salary_boundary)
+
+    plt.xlabel('Experience')
+    plt.ylabel('Salary')
+    plt.title('Decision boundary of Binary Cross-Entropy')
+    plt.legend((loan, no_loan),
+               ('Loan', 'No Loan'))
+    plt.show()
 
 X1 = [] #Experience
 X2 = [] #Salary
@@ -135,13 +163,8 @@ with open('loan2.csv', 'r') as file:
 
 lr = 0.1
 iter = 100
-loss, iter = focal_gradient_descent(X1, X2, y, lr, iter)
-
-plt.figure(figsize=(10, 8))
-plt.plot(iter, loss, label='Loss', color='blue')
-plt.xlabel('Iteration')
-plt.ylabel('Loss (Binary Cross-Entropy)')
-# plt.title('Loss Function Over Iterations')
-plt.show()  # Display the plot
+loss, iter, w0, w1, w2 = gradient_descent(X1, X2, y, lr, iter)
+# loss_plot(iter, loss)
+boundary_plot(X1, X2, w0, w1, w2)
 
 
