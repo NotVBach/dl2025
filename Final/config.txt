@@ -1,0 +1,6 @@
+5
+Input shape=1x28x28
+Conv2D filters=16 kernel=3x3 stride=1 padding=same activation=relu
+MaxPool2D pool=2x2 stride=2
+Dense units=128 activation=relu
+Dense units=2 activation=softmax
