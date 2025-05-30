@@ -130,13 +130,11 @@ class CNN:
             plt.show()
     
     def predict_image(self, image_path: str) -> int:
-        """Predict the class (0 or 1) for a single image."""
         img_data = self.load_single_image(image_path)
         prediction = self.forward(img_data)
         return prediction.index(max(prediction))
     
     def predict_folder(self, image_folder: str, label_file: str) -> float:
-        """Predict classes for all images in a folder and compute accuracy."""
         images, labels = self.load_folder(image_folder, label_file)
         correct = 0
         total = len(images)
