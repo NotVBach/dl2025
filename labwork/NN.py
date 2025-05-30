@@ -38,8 +38,10 @@ def uniRand():
     # Normalize between 0 and 1
     return (seed % 10000) / 10000
 
-layerNum, config = readConfig("resource/Lab3/config.txt")
-print(layerNum, config)
+# layerNum, config = readConfig("resource/Lab3/config.txt")
+# print(layerNum, config)
+res = uniRand()
+print(res)
 
 
 
