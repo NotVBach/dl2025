@@ -6,7 +6,7 @@ class Random:
     Absolutely not copy and paste
     '''
 
-    def __init__(self, seed: int = 123456):
+    def __init__(self, seed: int = 666666):
         self.seed = seed
         self.a = 1664525
         self.c = 1013904223

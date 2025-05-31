@@ -18,11 +18,11 @@ if __name__ == "__main__":
     images, labels = cnn.load_folder(train_folder, train_label)
 
     # Train
-    cnn.train(images, labels, epochs=20, learning_rate=0.01)
+    cnn.train(images, labels, epochs=10, learning_rate=0.1)
     cnn.plot_loss()
 
-    # Predict
-    accuracy, confusion_matrix = cnn.predict_folder(test_folder, test_label)
-    print(confusion_matrix)
-    print(f"Accuracy: {accuracy:.4f}")
-    cnn.plot_confusion_matrix(confusion_matrix)
+    # # Predict
+    # accuracy, confusion_matrix = cnn.predict_folder(test_folder, test_label)
+    # print(confusion_matrix)
+    # print(f"Accuracy: {accuracy:.4f}")
+    # cnn.plot_confusion_matrix(confusion_matrix)
