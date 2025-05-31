@@ -134,16 +134,42 @@ class CNN:
         prediction = self.forward(img_data)
         return prediction.index(max(prediction))
     
-    def predict_folder(self, image_folder: str, label_file: str) -> float:
+    def predict_folder(self, image_folder: str, label_file: str) -> Tuple[float, List[List[int]]]:
         images, labels = self.load_folder(image_folder, label_file)
         correct = 0
         total = len(images)
+        confusion_matrix = [[0, 0], [0, 0]]
         
         for img, label in zip(images, labels):
             prediction = self.forward(img)
             predicted_class = prediction.index(max(prediction))
+            confusion_matrix[label][predicted_class] += 1
             if predicted_class == label:
                 correct += 1
         
-        accuracy = correct / total
-        return accuracy
+        accuracy = correct / total if total > 0 else 0.0
+        return accuracy, confusion_matrix
+    
+    def plot_confusion_matrix(self, confusion_matrix: List[List[int]], classes: List[str] = ['0', '1']):
+        plt.figure(figsize=(6, 6))
+        max_value = max(max(row) for row in confusion_matrix)
+        im = plt.imshow(confusion_matrix, interpolation='nearest', cmap=plt.cm.Blues)
+        plt.colorbar(im)
+        
+        plt.title('Confusion Matrix')
+        tick_marks = list(range(len(classes)))
+        plt.xticks(tick_marks, classes)
+        plt.yticks(tick_marks, classes)
+        
+        thresh = max_value / 2.
+        for i in range(len(classes)):
+            for j in range(len(classes)):
+                plt.text(j, i, str(confusion_matrix[i][j]),
+                         horizontalalignment="center",
+                         color="white" if confusion_matrix[i][j] > thresh else "black")
+        
+        plt.ylabel('True Label')
+        plt.xlabel('Predicted Label')
+        plt.tight_layout()
+        plt.savefig("plots/Confusion_Matrix.jpg")
+        plt.show()
